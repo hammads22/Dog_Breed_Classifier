@@ -13,6 +13,7 @@ Models Used
 1. YOLOv8
    - Task: Detect dogs in an image
    - Output: Bounding boxes
+
 2. ResNet50
    - Task: Classify breed of dog from image
    - Output: Breed label (e.g., Golden Retriever, German Shepherd, etc.)
