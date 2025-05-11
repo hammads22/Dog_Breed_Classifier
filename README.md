@@ -25,16 +25,6 @@ How It Works
    - ResNet50 → Classifies the breed of the dog
 3. Results are displayed on the page.
 
-Project Structure
------------------
-app.py              # Flask backend logic
-index.html          # Frontend interface
-Model/
-    yolo8.pt        # YOLOv8 object detection model weights
-    resnet50.h5     # ResNet50 image classification model
-static/
-    uploads/        # Folder for uploaded user images
-
 Run Locally
 -----------
 1. Clone the repo and navigate into it
