@@ -1,4 +1,3 @@
-```markdown
 # 🐕 AI Dog Breed Analyzer
 
 An elegant, web-based artificial intelligence vision application that utilizes dual deep-learning models to analyze images. The system detects the presence of dogs using YOLOv8 and precisely classifies them into one of 120 distinct breeds using a custom-trained PyTorch ResNet50 model.
@@ -130,4 +129,3 @@ The project maintains a strict separation of concerns, keeping training pipeline
 
 ```
 
-```
