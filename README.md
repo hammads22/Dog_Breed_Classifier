@@ -3,7 +3,6 @@
 
 An elegant, web-based artificial intelligence vision application that utilizes dual deep-learning models to analyze images. The system detects the presence of dogs using YOLOv8 and precisely classifies them into one of 120 distinct breeds using a custom-trained PyTorch ResNet50 model.
 
----
 
 ## ✨ Features
 
@@ -13,7 +12,7 @@ An elegant, web-based artificial intelligence vision application that utilizes d
 * **Modern User Interface:** A sleek, dark-themed glassmorphism frontend with real-time image previews and asynchronous loading states.
 * **Containerized Deployment:** Fully configured Docker support for guaranteed cross-platform execution.
 
----
+
 
 ## 🧠 Models Used
 
@@ -28,7 +27,6 @@ An elegant, web-based artificial intelligence vision application that utilizes d
 
 *(Note: The Google Colab notebook for the original data exploration and initial training phase can be found [here](https://colab.research.google.com/drive/1xyCztxC3i8KgjJbprxEhW82JOfGjrcm5?usp=sharing)).*
 
----
 
 ## 🚀 Installation & Setup
 
