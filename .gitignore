@@ -1,0 +1,32 @@
+# =========================
+# 1. Datasets & Training Outputs
+# =========================
+# Ignore massive dataset folders
+DatasetStore/
+Stanford-dogs-3/
+
+# Ignore YOLO training runs and metric outputs
+runs/
+
+
+# =========================
+# 2. Virtual Environments
+# =========================
+.venv/
+venv/
+env/
+
+# =========================
+# 3. Python Cache Files
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# =========================
+# 4. IDE & OS Files
+# =========================
+.vscode/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,15 @@
+# Ignore Virtual Environments
+.venv/
+env/
+venv/
+
+# Ignore massive training datasets
+DatasetStore/
+
+# Ignore training scripts (not needed for the live web app)
+training_scripts/
+*.ipynb
+
+# Ignore Python cache files
+__pycache__/
+*.pyc

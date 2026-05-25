@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dog Breed Analyzer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-weight: 600;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        /* Custom File Upload */
+        .file-upload-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-main);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Image Preview */
+        #previewContainer {
+            display: none;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            max-height: 250px;
+            object-fit: cover;
+        }
+
+        /* Predict Button */
+        button {
+            background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Results Area */
+        .results-container {
+            display: none;
+            margin-top: 30px;
+            text-align: left;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .result-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .result-box h4 {
+            margin: 0 0 4px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-box p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>AI Vision Analysis</h2>
+        <p class="subtitle">Powered by PyTorch ResNet50 & YOLOv8</p>
+
+        <div class="file-upload-wrapper">
+            <label class="file-upload-label" for="fileInput" id="fileLabel">
+                <span id="fileNameText">📸 Click to browse or drop an image here</span>
+            </label>
+            <input type="file" id="fileInput" accept="image/*" onchange="previewFile()">
+        </div>
+
+        <div id="previewContainer">
+            <img id="imagePreview" alt="Image Preview">
+        </div>
+
+        <button id="predictBtn" onclick="uploadImage()">Analyze Image</button>
+
+        <div class="loader" id="loader"></div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="result-box">
+                <h4>ResNet50 Classification</h4>
+                <p id="result1">--</p>
+            </div>
+            <div class="result-box" style="border-left-color: #c084fc;">
+                <h4>YOLOv8 Detection</h4>
+                <p id="result2">--</p>
+            </div>
+            
+            </div>
+    </div>
+
+    <script>
+        // Handle file selection and preview
+        function previewFile() {
+            const fileInput = document.getElementById('fileInput');
+            const fileLabel = document.getElementById('fileNameText');
+            const previewContainer = document.getElementById('previewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(fileInput.files[0]);
+                fileLabel.textContent = fileInput.files[0].name;
+            }
+        }
+
+        // Handle the Prediction AJAX request
+        function uploadImage() {
+            let fileInput = document.getElementById("fileInput");
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Please select an image first!");
+                return;
+            }
+
+            let file = fileInput.files[0];
+            let formData = new FormData();
+            formData.append("file", file);
+
+            // UI State: Loading
+            $('#predictBtn').prop('disabled', true).text('Analyzing...');
+            $('#loader').css('display', 'block');
+            $('#resultsContainer').css('display', 'none');
+
+            $.ajax({
+                type: "POST",
+                url: "/predict",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Update text
+                    $("#result1").text(response.model1_prediction);
+                    $("#result2").text(response.model2_prediction);
+                    
+                    // (Optional) If you want to update the image with the one returned from the backend
+                    // $("#uploadedImage").attr("src", response.image_path).show();
+
+                    // UI State: Success
+                    $('#loader').css('display', 'none');
+                    $('#resultsContainer').css('display', 'block');
+                    $('#predictBtn').prop('disabled', false).text('Analyze Another Image');
+                },
+                error: function() {
+                    alert("An error occurred while processing the image.");
+                    $('#loader').css('display', 'none');
+                    $('#predictBtn').prop('disabled', false).text('Analyze Image');
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
