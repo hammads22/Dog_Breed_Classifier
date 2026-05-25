@@ -127,5 +127,4 @@ The project maintains a strict separation of concerns, keeping training pipeline
 * **ResNet50 Architecture** by Kaiming He et al.
 * **Dataset** provided by [Stanford Dogs](http://vision.stanford.edu/aditya86/ImageNetDogs/)
 
-```
 
